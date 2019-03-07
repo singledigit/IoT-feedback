@@ -4,7 +4,7 @@ Description: IoT FeedBack
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: IoT Session Feedback
+    Name: IoT_Session_Feedback
     Description: "Session Feedback Engine Using Serverless and IoT Buttons"
     Author: Eric Johnson
     SpdxLicenseId: MIT
@@ -13,8 +13,10 @@ Metadata:
     Labels:
       - Serverless
       - IoT
+      - Session Feedback
+      - Node
     HomePageUrl: https://github.com/singledigit/IoT-feedback
-    SemanticVersion: 0.0.1
+    SemanticVersion: 0.0.2
     SourceCodeUrl: https://github.com/singledigit/IoT-feedback/releases/tag/v0.0.1
 
 Globals:
