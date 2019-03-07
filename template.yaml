@@ -1,0 +1,104 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: FeedBack Project
+
+Globals:
+    Function:
+        Timeout: 3
+        Runtime: nodejs8.10
+        Layers:
+          - arn:aws:lambda:us-west-2:410646685895:layer:aws-sdk:2
+        Environment:
+            Variables:
+                TABLE_NAME: !Ref FeedBackTable
+                SESSION_PARAMETER: !Ref SessionNameParameter
+    Api:
+        Cors:
+            AllowMethods: "'*'"
+            AllowHeaders: "'*'"
+            AllowOrigin: "'*'"
+
+Parameters:
+    IoTRuleTopic:
+        Type: String
+        Description: IoT Rule Topic to be monitored for IoT Buttons. Default is 'iotbutton/+' which monitors all buttons tied to account.
+        Default: iotbutton/+
+    SessionName:
+        Type: String
+        Description: Name of session for feedback. This will be stored in the Parameter Store and can be updated to create new sessions
+        Default: My Session
+
+Resources:
+    SessionNameParameter:
+        Type: AWS::SSM::Parameter
+        Properties:
+            Value: !Ref SessionName
+            Type: String
+
+    WebGetFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: web-get/
+            Handler: app.lambdaHandler
+            Policies:
+              - DynamoDBReadPolicy: {
+                    TableName: !Ref FeedBackTable
+                }
+              - SSMParameterReadPolicy: {
+                    ParameterName: !Ref SessionNameParameter
+                }
+            Events:
+                HelloWorld:
+                    Type: Api
+                    Properties:
+                        Path: /
+                        Method: get
+
+    IoTPostFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: iot-post/
+            Handler: app.lambdaHandler
+            Policies:
+              - DynamoDBCrudPolicy: {
+                    TableName: !Ref FeedBackTable
+                }
+              - SSMParameterReadPolicy: {
+                    ParameterName: !Ref SessionNameParameter
+                }
+            Events:
+                ButtonClick:
+                    Type: IoTRule
+                    Properties:
+                        Sql: !Sub "SELECT * FROM '${IoTRuleTopic}'"
+                        AwsIotSqlVersion: '2016-03-23'
+                HelloWorld:
+                    Type: Api
+                    Properties:
+                        Path: /
+                        Method: post
+
+    FeedBackTable:
+        Type: AWS::Serverless::SimpleTable
+
+
+Outputs:
+    WebGetApi:
+        Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+        Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+
+    WebGetFunction:
+        Description: "Hello World Lambda Function ARN"
+        Value: !GetAtt WebGetFunction.Arn
+
+    WebGetIamRole:
+        Description: "Implicit IAM Role created for Hello World function"
+        Value: !GetAtt WebGetFunctionRole.Arn
+
+    FeedBackTableName:
+        Description: "Table Name for data"
+        Value: !Ref FeedBackTable
+
+    SessionParameterName:
+        Description: Parameter Name that holds the session name
+        Value: !Ref SessionNameParameter
