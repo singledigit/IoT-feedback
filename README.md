@@ -1,7 +1,7 @@
 # IoT FeedBack Engine
 This application provides an IoT enabled feedback engine for speaking sessions. This project is the backend and can be launched via the AWS Serverless Application Repository.
 
-The purpose of this application is to allow others to rate your session as Cool, Uncool, or Undecided. They can rate you using a connected IoT button or via the website. The client website can be found [https://github.com/singledigit/IoT-feedback-web-client](here)
+The purpose of this application is to allow others to rate your session as Cool, Uncool, or Undecided. They can rate you using a connected IoT button or via the website. The client website can be found [here](https://github.com/singledigit/IoT-feedback-web-client)
 
 ## Parameters
 When launching this project, two parameters can be passed.
