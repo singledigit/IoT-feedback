@@ -16,8 +16,8 @@ Metadata:
       - Feedback
       - Node
     HomePageUrl: https://github.com/singledigit/IoT-feedback
-    SemanticVersion: 0.0.4
-    SourceCodeUrl: https://github.com/singledigit/IoT-feedback/releases/tag/v0.0.4
+    SemanticVersion: 0.0.5
+    SourceCodeUrl: https://github.com/singledigit/IoT-feedback/releases/tag/v0.0.5
 
 Globals:
     Function:
@@ -65,7 +65,7 @@ Resources:
                     ParameterName: !Ref SessionNameParameter
                 }
             Events:
-                HelloWorld:
+                WebGet:
                     Type: Api
                     Properties:
                         Path: /
@@ -89,7 +89,7 @@ Resources:
                     Properties:
                         Sql: !Sub "SELECT * FROM '${IoTRuleTopic}'"
                         AwsIotSqlVersion: '2016-03-23'
-                HelloWorld:
+                WebPost:
                     Type: Api
                     Properties:
                         Path: /
