@@ -52,10 +52,10 @@ Resources:
             Value: !Ref SessionName
             Type: String
 
-    WebGetFunction:
+    GetFunction:
         Type: AWS::Serverless::Function
         Properties:
-            CodeUri: web-get/
+            CodeUri: get/
             Handler: app.lambdaHandler
             Policies:
               - DynamoDBReadPolicy: {
@@ -71,10 +71,10 @@ Resources:
                         Path: /
                         Method: get
 
-    IoTPostFunction:
+    PostFunction:
         Type: AWS::Serverless::Function
         Properties:
-            CodeUri: iot-post/
+            CodeUri: post/
             Handler: app.lambdaHandler
             Policies:
               - DynamoDBCrudPolicy: {
@@ -103,14 +103,6 @@ Outputs:
     WebGetApi:
         Description: "API Gateway endpoint URL for Prod stage for Hello World function"
         Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
-
-    WebGetFunction:
-        Description: "Hello World Lambda Function ARN"
-        Value: !GetAtt WebGetFunction.Arn
-
-    WebGetIamRole:
-        Description: "Implicit IAM Role created for Hello World function"
-        Value: !GetAtt WebGetFunctionRole.Arn
 
     FeedBackTableName:
         Description: "Table Name for data"
