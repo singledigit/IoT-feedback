@@ -20,25 +20,26 @@ exports.lambdaHandler = async () => {
         return err
     })
 
-    console.log(session);
-
-    let data = await exports.fetchData(session.Parameter.Value)
-
-    if(!data.body){
-        let putParams = {
-            TableName: process.env.TABLE_NAME,
-            Item: {
-                id: session.Parameter.Value,
-                Cool: 0,
-                Uncool: 0,
-                Undecided: 0
+    let data = await exports.fetchData(session.Parameter.Value).catch(err => {
+        return {
+            'statusCode': 500,
+            'body': JSON.stringify({
+                message: "There was a problem fetching the data"
+            }),
+            'headers': {
+                "Access-Control-Allow-Origin": "*"
             }
         }
-        await db.put(putParams).promise().catch(err => {
-            return err
-        })
+    })
 
-        data = await exports.fetchData(session.Parameter.Value)
+    if (!data.Item) {
+        return {
+            'statusCode': 404,
+            'body': JSON.stringify({}),
+            'headers': {
+                "Access-Control-Allow-Origin": "*"
+            }
+        }
     }
 
     return {
