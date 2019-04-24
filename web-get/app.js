@@ -32,19 +32,9 @@ exports.lambdaHandler = async () => {
         }
     })
 
-    if (!data.Item) {
-        return {
-            'statusCode': 404,
-            'body': JSON.stringify({}),
-            'headers': {
-                "Access-Control-Allow-Origin": "*"
-            }
-        }
-    }
-
     return {
         'statusCode': 200,
-        'body': JSON.stringify(data),
+        'body': JSON.stringify(data.Item || null),
         'headers': {
             "Access-Control-Allow-Origin": "*"
         }
