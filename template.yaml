@@ -23,8 +23,8 @@ Globals:
     Function:
         Timeout: 3
         Runtime: nodejs8.10
-        Layers:
-          - arn:aws:lambda:us-west-2:410646685895:layer:aws-sdk:2
+        # Layers:
+        #   - arn:aws:lambda:us-west-2:410646685895:layer:aws-sdk:2
         Environment:
             Variables:
                 TABLE_NAME: !Ref FeedBackTable
