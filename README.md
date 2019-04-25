@@ -38,3 +38,9 @@ You will need to spin up multiple versions of the web client as well.
 * API Gateway
 * IoT
 * S3 (Hosting the client)
+
+==============================================
+
+Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+SPDX-License-Identifier: MIT-0
