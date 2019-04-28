@@ -19,12 +19,19 @@ Metadata:
     SemanticVersion: 0.0.7
     SourceCodeUrl: https://github.com/singledigit/IoT-feedback/releases/tag/v0.0.7
 
+Mappings: 
+  RegionMap: 
+    us-east-1:
+        layer: arn:aws:lambda:us-east-1:700336187521:layer:aws-sdk:2
+    us-west-2:
+        layer: arn:aws:lambda:us-west-2:410646685895:layer:aws-sdk:2
+
 Globals:
     Function:
         Timeout: 3
         Runtime: nodejs8.10
-        # Layers:
-        #   - arn:aws:lambda:us-west-2:410646685895:layer:aws-sdk:2
+        Layers:
+          - !FindInMap [RegionMap, !Ref "AWS::Region", layer]
         Environment:
             Variables:
                 TABLE_NAME: !Ref FeedBackTable
@@ -84,11 +91,11 @@ Resources:
                     ParameterName: !Ref SessionNameParameter
                 }
             Events:
-                ButtonClick:
-                    Type: IoTRule
-                    Properties:
-                        Sql: !Sub "SELECT * FROM '${IoTRuleTopic}'"
-                        AwsIotSqlVersion: '2016-03-23'
+                # ButtonClick:
+                #     Type: IoTRule
+                #     Properties:
+                #         Sql: !Sub "SELECT * FROM '${IoTRuleTopic}'"
+                #         AwsIotSqlVersion: '2016-03-23'
                 WebPost:
                     Type: Api
                     Properties:
@@ -97,7 +104,6 @@ Resources:
 
     FeedBackTable:
         Type: AWS::Serverless::SimpleTable
-
 
 Outputs:
     WebGetApi:

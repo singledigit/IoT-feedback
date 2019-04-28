@@ -35,12 +35,14 @@ exports.lambdaHandler = async (event) => {
         return err
     })
 
+    console.log(event);
+
     // HTTP?
     if(event.body){
         let b = JSON.parse(event.body)
         mood = moods[b.clickType]
     } else {
-        mood = moods[event.clickType]
+        mood = moods[event.deviceEvent.buttonClicked.clickType]
     }
 
     let params = {
